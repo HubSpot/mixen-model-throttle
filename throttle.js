@@ -10,7 +10,7 @@
     };
 
     ThrottleModel.prototype.save = function(data, opts) {
-      var after, name, old_error, old_success,
+      var after, minSaveInterval, name, old_error, old_success, _ref, _ref1,
         _this = this;
       if (opts == null) {
         opts = {};
@@ -21,10 +21,8 @@
         data[name] = opts;
         opts = {};
       }
-      if (opts.minSaveInterval == null) {
-        opts.minSaveInterval = 100;
-      }
-      if (this.saving || (this.lastSave && (new Date - this.lastSave) < opts.minSaveInterval)) {
+      minSaveInterval = (_ref = (_ref1 = opts.minSaveInterval) != null ? _ref1 : this.minSaveInterval) != null ? _ref : 100;
+      if (this.saving || (this.lastSave && (new Date - this.lastSave) < minSaveInterval)) {
         this.set(data, opts);
         this.queued = [{}, opts];
         return;
@@ -37,7 +35,7 @@
           _this.queued = false;
           return setTimeout(function() {
             return _this.save.apply(_this, args);
-          }, opts.minSaveInterval);
+          }, minSaveInterval);
         }
       };
       old_success = opts.success;
