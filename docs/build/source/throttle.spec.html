@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>throttle.spec.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="throttle.spec.html">
+                throttle.spec.coffee
+              </a>
+            
+              
+              <a class="source" href="throttle.html">
+                throttle.coffee
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>throttle.spec.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>describe <span class="string">'Throttle'</span>, -&gt;
+  it <span class="string">'should be defined'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">MyThing</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Mixen</span>.<span class="title">Model</span>.<span class="title">Throttle</span>)</span>
+
+  it <span class="string">'should prevent concurrent saves'</span>, -&gt;
+    requests = <span class="number">0</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">MyThing</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Mixen</span>.<span class="title">Model</span>.<span class="title">Throttle</span>, <span class="title">Backbone</span>.<span class="title">Model</span>)</span>
+      sync: (method, model, options) -&gt;
+        requests++
+
+        setTimeout -&gt;
+          requests--
+          options.success(model, {}, options)
+        , <span class="number">50</span>
+
+    inst = <span class="keyword">new</span> MyThing
+
+    runs -&gt;
+      inst.save({}, {minSaveInterval: <span class="number">0</span>})
+
+      expect(requests).toBe(<span class="number">1</span>)
+
+    waits <span class="number">0</span>
+
+    runs -&gt;
+      inst.save({}, {minSaveInterval: <span class="number">0</span>})
+
+      expect(requests).toBe(<span class="number">1</span>)
+
+    waits <span class="number">75</span>
+
+    runs -&gt;
+      expect(requests).toBe(<span class="number">1</span>)
+
+    waits <span class="number">55</span>
+
+    runs -&gt;
+      expect(requests).toBe(<span class="number">0</span>)</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

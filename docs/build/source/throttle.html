@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>throttle.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="throttle.spec.html">
+                throttle.spec.coffee
+              </a>
+            
+              
+              <a class="source" href="throttle.html">
+                throttle.coffee
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>throttle.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="class"><span class="keyword">class</span> <span class="title">ThrottleModel</span></span>
+  initialize: -&gt;
+    <span class="keyword">super</span>
+
+    <span class="property">@lastSave</span> = <span class="number">0</span>
+
+  save: (data, opts={}) -&gt;
+    <span class="keyword">if</span> <span class="keyword">typeof</span> data <span class="keyword">is</span> <span class="string">'string'</span>
+      name = data
+      data = {}
+      data[name] = opts
+      opts = {}
+
+    opts.minSaveInterval ?= <span class="number">100</span>
+
+    <span class="keyword">if</span> <span class="property">@saving</span> <span class="keyword">or</span> (<span class="property">@lastSave</span> <span class="keyword">and</span> (<span class="keyword">new</span> Date - <span class="property">@lastSave</span>) &lt; opts.minSaveInterval)
+      <span class="property">@set</span> data, opts
+      <span class="property">@queued</span> = [{}, opts]
+      <span class="keyword">return</span>
+
+    <span class="function"><span class="title">after</span></span> = =&gt;
+      <span class="property">@saving</span> = <span class="literal">false</span>
+
+      <span class="keyword">if</span> <span class="property">@queued</span>
+        args = <span class="property">@queued</span>
+        <span class="property">@queued</span> = <span class="literal">false</span>
+        
+        setTimeout =&gt;
+          <span class="property">@save</span> args...
+        , opts.minSaveInterval
+
+    old_success = opts.success
+    opts.<span class="function"><span class="title">success</span></span> = =&gt;
+      old_success?(arguments...)
+
+      after()
+
+    old_error = opts.error
+    opts.<span class="function"><span class="title">error</span></span> = =&gt;
+      old_error?(arguments...)
+
+      after()
+
+    <span class="property">@queued</span> = <span class="literal">false</span>
+    <span class="property">@saving</span> = <span class="literal">true</span>
+    <span class="property">@lastSave</span> = +<span class="keyword">new</span> Date
+
+    <span class="keyword">super</span> data, opts
+  
+<span class="keyword">if</span> <span class="keyword">typeof</span> define <span class="keyword">is</span> <span class="string">'function'</span> <span class="keyword">and</span> define.amd</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>AMD</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  define -&gt; ThrottleModel
+<span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">typeof</span> exports <span class="keyword">is</span> <span class="string">'object'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  module.exports = ThrottleModel
+<span class="keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Global</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span> <span class="keyword">not</span> window.Mixen
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error <span class="string">"Mixen must be defined before including a mixin"</span>
+
+  window.Mixen.Model ?= {}
+  window.Mixen.Model.Throttle = ThrottleModel</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
