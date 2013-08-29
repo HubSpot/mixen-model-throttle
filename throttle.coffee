@@ -11,9 +11,9 @@ class ThrottleModel
       data[name] = opts
       opts = {}
 
-    opts.minSaveInterval ?= 100
+    minSaveInterval = opts.minSaveInterval ? @minSaveInterval ? 100
 
-    if @saving or (@lastSave and (new Date - @lastSave) < opts.minSaveInterval)
+    if @saving or (@lastSave and (new Date - @lastSave) < minSaveInterval)
       @set data, opts
       @queued = [{}, opts]
       return
@@ -27,7 +27,7 @@ class ThrottleModel
         
         setTimeout =>
           @save args...
-        , opts.minSaveInterval
+        , minSaveInterval
 
     old_success = opts.success
     opts.success = =>
