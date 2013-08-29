@@ -1,0 +1,38 @@
+{
+  "name": "mixen-model-throttle",
+  "version": "0.1.0",
+  "description": "Prevent models from saving too frequently",
+  "main": "throttle.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:HubSpot/mixen-model-throttle.git"
+  },
+  "scripts": {
+    "test": "grunt jasmine"
+  },
+  "keywords": [
+    "mixen",
+    "backbone"
+  ],
+  "author": "Zack Bloom <zbloom@hubspot.com>",
+  "maintainers": [
+    "Zack Bloom <zbloom@hubspot.com>"
+  ],
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "coffee-script": "~1.6.3",
+    "mixen": "~0.4.7"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.9",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jasmine": "~0.5.1"
+  }
+}
