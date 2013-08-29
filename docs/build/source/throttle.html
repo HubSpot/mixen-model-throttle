@@ -64,9 +64,9 @@
       data[name] = opts
       opts = {}
 
-    opts.minSaveInterval ?= <span class="number">100</span>
+    minSaveInterval = opts.minSaveInterval ? <span class="property">@minSaveInterval</span> ? <span class="number">100</span>
 
-    <span class="keyword">if</span> <span class="property">@saving</span> <span class="keyword">or</span> (<span class="property">@lastSave</span> <span class="keyword">and</span> (<span class="keyword">new</span> Date - <span class="property">@lastSave</span>) &lt; opts.minSaveInterval)
+    <span class="keyword">if</span> <span class="property">@saving</span> <span class="keyword">or</span> (<span class="property">@lastSave</span> <span class="keyword">and</span> (<span class="keyword">new</span> Date - <span class="property">@lastSave</span>) &lt; minSaveInterval)
       <span class="property">@set</span> data, opts
       <span class="property">@queued</span> = [{}, opts]
       <span class="keyword">return</span>
@@ -80,7 +80,7 @@
         
         setTimeout =&gt;
           <span class="property">@save</span> args...
-        , opts.minSaveInterval
+        , minSaveInterval
 
     old_success = opts.success
     opts.<span class="function"><span class="title">success</span></span> = =&gt;
