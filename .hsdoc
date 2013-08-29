@@ -1,1 +1,1 @@
-source: "{mixen.coffee,spec/mixen.spec.coffee}"
+source: "{throttle.coffee,spec/throttle.spec.coffee}"
